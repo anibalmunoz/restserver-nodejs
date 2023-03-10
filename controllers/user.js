@@ -1,15 +1,24 @@
-const { response } = require("express");
+const { response, request } = require("express");
 
-const usersGet = (req, res = response) => {
-  res.json({ msg: "get API - Controller" });
+const usersGet = (req = request, res = response) => {
+  //Query params
+  const params = req.query;
+  const { nombre, apikey } = params;
+
+  res.json({ msg: "get API - Controller", nombre, apikey });
 };
 
 const usersPut = (req, res = response) => {
-  res.json({ msg: "put API - Controller" });
+  const id = req.params.id;
+
+  res.json({ msg: "put API - Controller", id });
 };
 
 const usersPost = (req, res = response) => {
-  res.json({ msg: "post API - Controller" });
+  const body = req.body;
+  const { nombre, edad } = body; //Se puede desestructurar para omitir campos que no nos sirven
+
+  res.json({ msg: "post API - Controller", nombre, edad });
 };
 
 const usersDelete = (req, res = response) => {

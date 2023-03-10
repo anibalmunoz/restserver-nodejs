@@ -10,7 +10,8 @@ const router = Router();
 
 router.get("/", usersGet);
 
-router.put("/", usersPut);
+//http://localhost:8081/api/users/10
+router.put("/:id", usersPut);
 
 router.post("/", usersPost);
 

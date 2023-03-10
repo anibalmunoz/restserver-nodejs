@@ -18,6 +18,9 @@ class Server {
     //CORS  // Cors se usa para evitar errores de cross domain access
     this.app.use(cors());
 
+    //Lectura y parseo del body en JSON
+    this.app.use(express.json());
+
     //Directorio público
     this.app.use(express.static("public"));
   }
