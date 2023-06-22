@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors"); // Cors se usa para evitar errores de cross domain access
+const { dbConnection } = require("../database/config");
 
 class Server {
   constructor() {
@@ -7,11 +8,18 @@ class Server {
     this.port = process.env.PORT;
     this.usersPath = "/api/users";
 
+    //Conectar a base de datos
+    this.conectarDB();
+
     //Middlewares
     this.middlewares();
 
     //Rutas de mi aplicación
     this.routes();
+  }
+
+  async conectarDB() {
+    await dbConnection();
   }
 
   middlewares() {
@@ -31,7 +39,7 @@ class Server {
 
   listen() {
     this.app.listen(this.port, () =>
-      console.log("Servidor corriendo en puerrto", this.port)
+      console.log("Servidor corriendo en puerto", this.port)
     );
   }
 }
