@@ -33,4 +33,10 @@ const UsuarioSchema = Schema({
   },
 });
 
+//Remover __V y password de la respuespuesta del método post, para que no aparezcan.
+UsuarioSchema.methods.toJSON = function () {
+  const { __v, password, ...usuario } = this.toObject();
+  return usuario;
+};
+
 module.exports = model("Usuarios", UsuarioSchema);

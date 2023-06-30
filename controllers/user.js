@@ -16,17 +16,11 @@ const usersPut = (req, res = response) => {
   res.json({ msg: "put API - usersPut", id });
 };
 
+//Guardado de un nuevo usuario
 const usersPost = async (req, res = response) => {
   const body = req.body;
   const { nombre, correo, password, rol } = body; //Se puede desestructurar para omitir campos que no nos sirven
   const usuario = new Usuario({ nombre, correo, password, rol });
-  //Verificar si el correo existe
-  const existeEmail = await Usuario.findOne({ correo: correo });
-  if (existeEmail) {
-    return res.status(400).json({
-      msg: "El correo ya está registrado",
-    });
-  }
 
   //Encriptar la contraseña
   const salt = bcryptjs.genSaltSync();
