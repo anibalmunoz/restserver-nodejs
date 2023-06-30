@@ -2,12 +2,14 @@ const { response, request } = require("express");
 const bcryptjs = require("bcryptjs");
 const Usuario = require("../models/usuario");
 
-const usersGet = (req = request, res = response) => {
+const usersGet = async (req = request, res = response) => {
   //Query params
   const params = req.query;
-  const { nombre, apikey } = params;
+  const { limite = 5, desde = 0 } = params;
 
-  res.json({ msg: "get API - usersGet", nombre, apikey });
+  const usuarios = await Usuario.find().skip(desde).limit(Number(limite));
+
+  res.json({ usuarios });
 };
 
 const usersPut = async (req, res = response) => {
@@ -23,7 +25,7 @@ const usersPut = async (req, res = response) => {
 
   const usuario = await Usuario.findByIdAndUpdate(id, resto);
 
-  res.json({ msg: "put API - usersPut", usuario });
+  res.json(usuario);
 };
 
 //Guardado de un nuevo usuario
