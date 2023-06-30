@@ -10,10 +10,20 @@ const usersGet = (req = request, res = response) => {
   res.json({ msg: "get API - usersGet", nombre, apikey });
 };
 
-const usersPut = (req, res = response) => {
+const usersPut = async (req, res = response) => {
   const id = req.params.id;
+  const { _id, password, google, correo, ...resto } = req.body;
 
-  res.json({ msg: "put API - usersPut", id });
+  //TODO: validar contra base de datos
+  if (password) {
+    //Encriptar la contraseña
+    const salt = bcryptjs.genSaltSync();
+    resto.password = bcryptjs.hashSync(password, salt);
+  }
+
+  const usuario = await Usuario.findByIdAndUpdate(id, resto);
+
+  res.json({ msg: "put API - usersPut", usuario });
 };
 
 //Guardado de un nuevo usuario

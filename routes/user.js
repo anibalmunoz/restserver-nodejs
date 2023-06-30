@@ -9,14 +9,27 @@ const {
 } = require("../controllers/user");
 //Colección de middlewares de express-validator
 const { check } = require("express-validator");
-const { esRolValido, emailExiste } = require("../helpers/db-validators.js");
+const {
+  esRolValido,
+  emailExiste,
+  existeUsuarioxID,
+} = require("../helpers/db-validators.js");
 
 const router = Router();
 
 router.get("/", usersGet);
 
 //http://localhost:8081/api/usuarios/10
-router.put("/:id", usersPut);
+router.put(
+  "/:id",
+  [
+    check("id", "No es un ID válido").isMongoId(),
+    check("id").custom(existeUsuarioxID),
+    check("rol").custom(esRolValido),
+    validarCampos,
+  ],
+  usersPut
+);
 
 router.post(
   "/",
